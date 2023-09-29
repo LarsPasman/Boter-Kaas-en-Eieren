@@ -1,4 +1,5 @@
-from bke import MLAgent, is_winner, opponent, load, validate, RandomAgent, plot_validation
+import random
+from bke import MLAgent, is_winner, opponent, RandomAgent, train_and_plot
  
 class SlimmeAgent(MLAgent):
     def evaluate(self, board):
@@ -8,18 +9,19 @@ class SlimmeAgent(MLAgent):
             reward = -1
         else:
             reward = 0
-        return reward  
- 
-my_agent = load('SlimmeAgent')
+        return reward
 
-#hierdoor stopt die met leren.
-my_agent.learning = False
+#Door een seed te gebruiken wordt niet elke keer een nieuwe random tegenstander gebruikt, maar dezelfde. Hierdoor kan je goed vergelijken
+random.seed(1)
 
-#hij word vergeleken met een normale agent en daaruit wordt een validatie gemaakt.
-validation_agent = RandomAgent()
+#alpha is de leerfactor van de agent en epsilon is de verkenningsfactor van de agent
+my_agent = SlimmeAgent(alpha=0.8, epsilon=0.2)
+random_agent = RandomAgent()
 
-#Hij speelt hier 100 keer en valideerd dat dan.
-validation_result = validate(agent_x=my_agent, agent_o=validation_agent, iterations=100)
-
-#Teken de validatie van de agent
-plot_validation(validation_result)
+#bij Train_And_plot doet de Agent eerst een aantal trainingen, dat herhaalt hij een aantal keer en dan wordt dat gevalideert, de resultaten worden daarna getekend.
+train_and_plot(
+    agent=my_agent,
+    validation_agent=random_agent,
+    iterations=50,
+    trainings=100,
+    validations=1000)
