@@ -1,7 +1,6 @@
-from bke import MLAgent, is_winner, opponent, start
+from bke import MLAgent, is_winner, opponent, train, save
  
- #De agent leert nu door middel van een puntensysteem, hij krijgt punten als hij wint en verliest punten als hij verliest.
-class MyAgent(MLAgent):
+class SlimmeAgent(MLAgent):
     def evaluate(self, board):
         if is_winner(board, self.symbol):
             reward = 1
@@ -9,11 +8,12 @@ class MyAgent(MLAgent):
             reward = -1
         else:
             reward = 0
-        return reward
-    
+        return reward    
  
-my_agent = MyAgent()
-#aanroepen agent die punten wilt verzamelen.
+my_agent = SlimmeAgent()
+ 
+train(my_agent, 3000)
+# Hier gaat de agent 3000 keer het spel spelen. waardoor die steeds beter begrijpt hoe hij de meeste punten kan krijgen en dus steeds beter wordt in het spel.
 
-start(player_x=my_agent)
-# Nu word er een een agent aangeroepen die gebruik maakt van het puntensysteem waarin hij streeft naar punten.
+# Hier wordt de agent opgeslagen in een map genaamd 'SlimmeAgent'
+save(my_agent, 'SlimmeAgent')
