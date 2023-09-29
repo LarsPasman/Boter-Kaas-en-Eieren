@@ -1,6 +1,6 @@
-from bke import MLAgent, is_winner, opponent, load, start
+from bke import MLAgent, is_winner, opponent, load, validate, RandomAgent, plot_validation
  
-class MyAgent(MLAgent):
+class SlimmeAgent(MLAgent):
     def evaluate(self, board):
         if is_winner(board, self.symbol):
             reward = 1
@@ -8,11 +8,18 @@ class MyAgent(MLAgent):
             reward = -1
         else:
             reward = 0
-        return reward
+        return reward  
+ 
+my_agent = load('SlimmeAgent')
 
-#Hier wordt de agent die we net hebben opgeslagen in de aparte map teruggeroepen om tegen te spelen
-my_agent = load('SlimmeAgent') 
+#hierdoor stopt die met leren.
 my_agent.learning = False
 
-#Hier word voor player x nu de slimmeagent gebruikt die we net getraingt hebben 
-start(player_x=my_agent)
+#hij word vergeleken met een normale agent en daaruit wordt een validatie gemaakt.
+validation_agent = RandomAgent()
+
+#Hij speelt hier 100 keer en valideerd dat dan.
+validation_result = validate(agent_x=my_agent, agent_o=validation_agent, iterations=100)
+
+#Teken de validatie van de agent
+plot_validation(validation_result)
