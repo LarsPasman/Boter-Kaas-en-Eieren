@@ -1,11 +1,12 @@
-import random
 from bke import EvaluationAgent, start
 
-#Hiermee kiest de agent met behulp van een willekeurig gekozen getal een willekeurige zet.
-class MyRandomAgent(EvaluationAgent):
+#De speler doet geen random zetten meer maar hij evalueert het bord.
+class MijnSpeler(EvaluationAgent):
     def evaluate(self, board, my_symbol, opponent_symbol):
-        return random.randint(1, 500)
-
-my_random_agent = MyRandomAgent()
-start(player_x=my_random_agent)
-#dit maakt de agent aan die de X zal gaan besturen.
+        getal = 1
+        if board[4] == my_symbol:
+            getal = getal + 5
+        return getal
+ 
+mijn_speler = MijnSpeler()
+start(player_o=mijn_speler)
